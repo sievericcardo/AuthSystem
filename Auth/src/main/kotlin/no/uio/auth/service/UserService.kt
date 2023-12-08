@@ -1,7 +1,7 @@
-package no.uio.smol.auth.no.uio.auth.service
+package no.uio.auth.service
 
-import no.uio.smol.auth.no.uio.auth.model.User
-import no.uio.smol.auth.no.uio.auth.repository.UserRepository
+import no.uio.auth.model.User
+import no.uio.auth.repository.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.util.*
