@@ -23,4 +23,8 @@ class UserService @Autowired constructor(private val userRepository: UserReposit
     fun deleteUser(userId: Long) {
         userRepository.deleteById(userId)
     }
+
+    fun findByUsername(username: String): User? {
+        return userRepository.findByUsername(username)
+    }
 }
