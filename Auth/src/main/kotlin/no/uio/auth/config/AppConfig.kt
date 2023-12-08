@@ -6,5 +6,4 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ComponentScan(basePackages = arrayOf("no.uio.auth"))
 public class AppConfig {
-    // Additional configuration if needed
 }
