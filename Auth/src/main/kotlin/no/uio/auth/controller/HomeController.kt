@@ -1,14 +1,14 @@
-package no.uio.smol.auth.no.uio.auth.controller
+package no.uio.auth.controller
 
-import no.uio.smol.auth.no.uio.auth.config.ArgonConfig
+import no.uio.auth.config.ArgonConfig
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.http.ResponseEntity
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder
-import no.uio.smol.auth.no.uio.auth.service.UserService
-import no.uio.smol.auth.no.uio.auth.model.User
+import no.uio.auth.service.UserService
+import no.uio.auth.model.User
 
 data class UserRequest(val username: String, val email: String, val password: String)
 data class SignUpRequest(val userRequest: UserRequest, val passwordCheck: String)
