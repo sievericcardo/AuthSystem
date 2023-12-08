@@ -33,7 +33,7 @@ class HomeController(private val argonConfig: ArgonConfig, private val userServi
         )
         val encryptedPassword = passwordEncoder.encode(signUpRequest.userRequest.password)
 
-        val user = User(argonConfig, signUpRequest.userRequest.username, signUpRequest.userRequest.email, encryptedPassword)
+        val user = User(signUpRequest.userRequest.username, signUpRequest.userRequest.email, encryptedPassword)
         userService.createUser(user)
 
         return ResponseEntity.ok("User created successfully")
@@ -44,7 +44,7 @@ class HomeController(private val argonConfig: ArgonConfig, private val userServi
         val user = userService.findByUsername(signInRequest.userRequest.username)
             ?: return ResponseEntity.badRequest().body("User not found")
 
-        if (!user.passwordMatches(signInRequest.userRequest.password)) {
+        if (!userService.passwordMatches(user, signInRequest.userRequest.password)) {
             return ResponseEntity.badRequest().body("Invalid password")
         }
 
