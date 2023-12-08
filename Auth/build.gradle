@@ -1,0 +1,38 @@
+plugins {
+//    kotlin("jvm") version "1.9.21"
+    id 'org.jetbrains.kotlin.jvm' version '1.9.21'
+}
+
+group = "no.uio.auth"
+version = "0.1-SNAPSHOT"
+
+repositories {
+    mavenCentral()
+}
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(21))
+    }
+}
+
+dependencies {
+    testImplementation("org.jetbrains.kotlin:kotlin-test")
+    testImplementation("org.springframework.boot:spring-boot-starter-test:3.2.0")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa:3.2.0")
+    implementation("org.springframework.boot:spring-boot-starter-mustache:3.2.0")
+    implementation("org.springframework.boot:spring-boot-starter-web:3.2.0")
+    implementation("org.springframework.boot:spring-boot-starter-security:3.2.0")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.15.2")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.15.2")
+    implementation("org.jetbrains.kotlin:kotlin-reflect")
+    implementation("org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.2.Final")
+    runtimeOnly("org.springframework.boot:spring-boot-devtools:3.2.0")
+}
+
+tasks.test {
+    useJUnitPlatform()
+}
+kotlin {
+    jvmToolchain(21)
+}
