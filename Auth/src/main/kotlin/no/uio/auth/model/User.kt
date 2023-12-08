@@ -1,26 +1,32 @@
 package no.uio.smol.auth.no.uio.auth.model
 
+//import org.springframework.beans.factory.annotation.Value
+import no.uio.smol.auth.no.uio.auth.config.ArgonConfig
+import org.springframework.security.crypto.argon2.Argon2PasswordEncoder
 import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
 import javax.persistence.Id
 import java.util.UUID
 
 @Entity
-class User {
+class User(private val argonConfig: ArgonConfig,
+           user: String?,
+           e_mail: String?,
+           pass: String?) {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    // Use uuid instead of long
-    private val uuid: UUID? = null
+    private val uuid: String = UUID.randomUUID().toString()
 
-//    // Generate a random UUID
-//    val myUuid = UUID.randomUUID()
-//    val myUuidAsString = myUuid.toString()
-//
-//    // Print the UUID
-//    println("Generated UUID: $myUuid")
+    private val username: String? = user
+    private val email: String? = e_mail
+    private val password: String? = pass
 
-    private val username: String? = null
-    private val email: String? = null
-    private val password: String? = null
+    fun passwordMatches(rawPassword: String): Boolean {
+        val passwordEncoder = Argon2PasswordEncoder(
+            argonConfig.saltLength,
+            argonConfig.hashLength,
+            argonConfig.parallelism,
+            argonConfig.memory,
+            argonConfig.iterations
+        )
+        return passwordEncoder.matches(rawPassword, this.password)
+    }
 }
