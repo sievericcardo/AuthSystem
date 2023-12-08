@@ -1,7 +1,6 @@
-package no.uio.smol.auth.no.uio.auth.model
+package no.uio.auth.model
 
-//import org.springframework.beans.factory.annotation.Value
-import no.uio.smol.auth.no.uio.auth.config.ArgonConfig
+import no.uio.auth.config.ArgonConfig
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder
 import javax.persistence.Entity
 import javax.persistence.Id
@@ -15,9 +14,9 @@ class User(private val argonConfig: ArgonConfig,
     @Id
     private val uuid: String = UUID.randomUUID().toString()
 
-    private val username: String? = user
-    private val email: String? = e_mail
-    private val password: String? = pass
+    private var username: String? = user
+    private var email: String? = e_mail
+    private var password: String? = pass
 
     fun passwordMatches(rawPassword: String): Boolean {
         val passwordEncoder = Argon2PasswordEncoder(
