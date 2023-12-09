@@ -13,6 +13,9 @@ import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiParam
 import io.swagger.annotations.ApiResponse
 import io.swagger.annotations.ApiResponses
+import jakarta.servlet.http.HttpServletRequest
+import org.apache.commons.text.StringEscapeUtils
+import springfox.documentation.annotations.ApiIgnore
 
 data class UserRequest(val username: String, val email: String, val password: String)
 data class SignUpRequest(val userRequest: UserRequest, val passwordCheck: String)
@@ -40,10 +43,15 @@ class HomeController(private val argonConfig: ArgonConfig, private val userServi
         ApiResponse(code = 500, message = "Internal server error")
     ])
     @PostMapping("/signup")
-    fun signUp(@ApiParam(value = "Request to sign up a new user") @RequestBody signUpRequest: SignUpRequest): ResponseEntity<String> {
+    fun signUp(@ApiIgnore request: HttpServletRequest, @ApiParam(value = "Request to sign up a new user") @RequestBody signUpRequest: SignUpRequest): ResponseEntity<String> {
         if (signUpRequest.userRequest.password != signUpRequest.passwordCheck) {
             return ResponseEntity.badRequest().body("Passwords do not match")
         }
+
+        // Do input sanification on the request here
+        val username = StringEscapeUtils.escapeHtml4(signUpRequest.userRequest.username.trim())
+        val email = StringEscapeUtils.escapeHtml4(signUpRequest.userRequest.email.trim())
+        val password = StringEscapeUtils.escapeHtml4(signUpRequest.userRequest.password.trim())
 
         val passwordEncoder = Argon2PasswordEncoder(
             argonConfig.saltLength,
@@ -52,9 +60,9 @@ class HomeController(private val argonConfig: ArgonConfig, private val userServi
             argonConfig.memory,
             argonConfig.iterations
         )
-        val encryptedPassword = passwordEncoder.encode(signUpRequest.userRequest.password)
+        val encryptedPassword = passwordEncoder.encode(password)
 
-        val user = User(signUpRequest.userRequest.username, signUpRequest.userRequest.email, encryptedPassword)
+        val user = User(username, email, encryptedPassword)
         userService.createUser(user)
 
         return ResponseEntity.ok("User created successfully")
@@ -75,11 +83,14 @@ class HomeController(private val argonConfig: ArgonConfig, private val userServi
         ApiResponse(code = 500, message = "Internal server error")
     ])
     @PostMapping("/signin")
-    fun signIn(@ApiParam(value = "Request to sign in a new user") @RequestBody signInRequest: SignInRequest): ResponseEntity<String> {
-        val user = userService.findByUsername(signInRequest.userRequest.username)
+    fun signIn(@ApiIgnore request: HttpServletRequest, @ApiParam(value = "Request to sign in a new user") @RequestBody signInRequest: SignInRequest): ResponseEntity<String> {
+        val username = StringEscapeUtils.escapeHtml4(signInRequest.userRequest.username.trim())
+        val password = StringEscapeUtils.escapeHtml4(signInRequest.userRequest.password.trim())
+
+        val user = userService.findByUsername(username)
             ?: return ResponseEntity.badRequest().body("User not found")
 
-        if (!userService.passwordMatches(user, signInRequest.userRequest.password)) {
+        if (!userService.passwordMatches(user, password)) {
             return ResponseEntity.badRequest().body("Invalid password")
         }
 
