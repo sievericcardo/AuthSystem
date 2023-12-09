@@ -17,20 +17,31 @@ java {
 
 dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test")
+    // Spring Boot
     testImplementation("org.springframework.boot:spring-boot-starter-test:3.2.0")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa:3.2.0")
     implementation("org.springframework.boot:spring-boot-starter-mustache:3.2.0")
     implementation("org.springframework.boot:spring-boot-starter-web:3.2.0")
     implementation("org.springframework.boot:spring-boot-starter-security:3.2.0")
     implementation("org.springframework.boot:spring-boot-configuration-processor:3.2.0")
+    // PosgreSQL
     implementation("org.postgresql:postgresql:42.7.1")
+    // Jackson
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.15.2")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.15.2")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
+    // JPA
     implementation("org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.2.Final")
+    // DevTools
     runtimeOnly("org.springframework.boot:spring-boot-devtools:3.2.0")
-    implementation('io.springfox:springfox-swagger2:2.9.2')
-    implementation('io.springfox:springfox-swagger-ui:2.9.2')
+    // Swagger
+    implementation('io.springfox:springfox-swagger2:3.0.0')
+    implementation("io.springfox:springfox-swagger-ui:3.0.0")
+    // JWT
+    implementation("io.jsonwebtoken:jjwt-api:0.12.3")
+    // Commons
+    implementation('org.apache.commons:commons-text:1.11.0')
+    compileOnly("jakarta.servlet:jakarta.servlet-api:6.1.0-M1")
 }
 
 tasks.test {
