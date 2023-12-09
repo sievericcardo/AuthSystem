@@ -11,9 +11,9 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 @SpringBootApplication
 @EnableConfigurationProperties(ArgonConfig::class)
 //@EntityScan("no.uio.auth.model.User")
-@EnableJpaRepositories("no.*")
-@ComponentScan(basePackages = arrayOf("no.*"))
-@EntityScan("no.*")
+//@EnableJpaRepositories("no.*")
+//@ComponentScan(basePackages = arrayOf("no.*"))
+//@EntityScan("no.*")
 open class Auth
 
 fun main(args: Array<String>) {
