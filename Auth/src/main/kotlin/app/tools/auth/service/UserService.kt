@@ -17,7 +17,7 @@ class UserService @Autowired constructor(
     val allUsers: List<Any?>
         get() = userRepository.findAll()
 
-    fun getUserById(userId: Long): Optional<User?> {
+    fun getUserById(userId: String): Optional<User?> {
         return userRepository.findById(userId)
     }
 
@@ -25,7 +25,7 @@ class UserService @Autowired constructor(
         return userRepository.save(user)
     }
 
-    fun deleteUser(userId: Long) {
+    fun deleteUser(userId: String) {
         userRepository.deleteById(userId)
     }
 
@@ -41,6 +41,6 @@ class UserService @Autowired constructor(
             argonConfig.memory,
             argonConfig.iterations
         )
-        return passwordEncoder.matches(rawPassword, user.getPassword())
+        return passwordEncoder.matches(rawPassword, user.password)
     }
 }
