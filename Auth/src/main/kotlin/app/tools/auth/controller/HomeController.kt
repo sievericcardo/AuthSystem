@@ -1,14 +1,10 @@
-package no.uio.auth.controller
+package app.tools.auth.controller
 
-import no.uio.auth.config.ArgonConfig
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RestController
-import org.springframework.web.bind.annotation.RequestMapping
+import app.tools.auth.config.ArgonConfig
 import org.springframework.http.ResponseEntity
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder
-import no.uio.auth.service.UserService
-import no.uio.auth.model.User
+import app.tools.auth.service.UserService
+import app.tools.auth.model.User
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
@@ -16,6 +12,7 @@ import io.swagger.v3.oas.annotations.parameters.RequestBody as SwaggerRequestBod
 import org.apache.commons.text.StringEscapeUtils
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import org.springframework.web.bind.annotation.*
 
 data class UserRequest(val username: String, val email: String, val password: String)
 data class SignUpRequest(val userRequest: UserRequest, val passwordCheck: String)
@@ -28,7 +25,13 @@ data class SignInRequest(val userRequest: UserRequest)
 @RequestMapping("/api")
 class HomeController(private val argonConfig: ArgonConfig, private val userService: UserService) {
 
-    val log : Logger = LoggerFactory.getLogger(this.javaClass);
+    private val log : Logger = LoggerFactory.getLogger(this.javaClass);
+
+    @GetMapping("/status")
+    fun status(): String {
+        log.info("Application is running")
+        return "Application is running"
+    }
 
     /**
      * Sign up a new user.

@@ -1,4 +1,4 @@
-package no.uio.auth.config
+package app.tools.auth.config
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.boot.context.properties.bind.ConstructorBinding

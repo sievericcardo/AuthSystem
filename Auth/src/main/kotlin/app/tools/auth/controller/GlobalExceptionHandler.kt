@@ -1,4 +1,4 @@
-package no.uio.auth.controller
+package app.tools.auth.controller
 
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
