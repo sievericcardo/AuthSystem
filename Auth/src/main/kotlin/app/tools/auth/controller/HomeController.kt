@@ -53,6 +53,8 @@ class HomeController(private val argonConfig: ArgonConfig, private val userServi
             return ResponseEntity.badRequest().body("Passwords do not match")
         }
 
+        log.info("Creating user: {}", signUpRequest.userRequest)
+
         // Do input sanification on the request here
         val username = StringEscapeUtils.escapeHtml4(signUpRequest.userRequest.username.trim())
         val email = StringEscapeUtils.escapeHtml4(signUpRequest.userRequest.email.trim())
@@ -93,6 +95,8 @@ class HomeController(private val argonConfig: ArgonConfig, private val userServi
     fun signIn(@SwaggerRequestBody(description = "Request to sign in a new user") @RequestBody signInRequest: SignInRequest): ResponseEntity<String> {
         val username = StringEscapeUtils.escapeHtml4(signInRequest.userRequest.username.trim())
         val password = StringEscapeUtils.escapeHtml4(signInRequest.userRequest.password.trim())
+
+        log.info("Request to sign in user: {}", username)
 
         val user = userService.findByUsername(username)
             ?: return ResponseEntity.badRequest().body("User not found")
