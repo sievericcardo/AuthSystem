@@ -52,6 +52,7 @@ dependencies {
     implementation("org.hibernate.orm:hibernate-core:${hibernateVersion}")
     // DevTools
     runtimeOnly("org.springframework.boot:spring-boot-devtools:${springBootVersion}")
+    implementation("org.bouncycastle:bcprov-jdk18on:1.78.1")
     // Swagger
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:${springDocVersion}")
     // JWT
