@@ -1,7 +1,5 @@
-package no.uio.auth.model
+package app.tools.auth.model
 
-import no.uio.auth.config.ArgonConfig
-import org.springframework.security.crypto.argon2.Argon2PasswordEncoder
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import java.util.UUID
