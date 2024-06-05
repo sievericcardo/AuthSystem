@@ -1,4 +1,4 @@
-package no.uio.auth.service
+package app.tools.auth.service
 
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
