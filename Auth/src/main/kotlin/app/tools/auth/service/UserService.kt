@@ -1,8 +1,8 @@
-package no.uio.auth.service
+package app.tools.auth.service
 
-import no.uio.auth.config.ArgonConfig
-import no.uio.auth.model.User
-import no.uio.auth.repository.UserRepository
+import app.tools.auth.config.ArgonConfig
+import app.tools.auth.model.User
+import app.tools.auth.repository.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder
 import org.springframework.stereotype.Service
@@ -11,8 +11,9 @@ import java.util.*
 
 @Service
 class UserService @Autowired constructor(
-        private val userRepository: UserRepository,
-        private val argonConfig: ArgonConfig) {
+    private val userRepository: UserRepository,
+    private val argonConfig: ArgonConfig
+) {
     val allUsers: List<Any?>
         get() = userRepository.findAll()
 
