@@ -1,7 +1,7 @@
-package no.uio.auth.repository
+package app.tools.auth.repository
 
 import org.springframework.data.jpa.repository.JpaRepository
-import no.uio.auth.model.User
+import app.tools.auth.model.User
 
 interface UserRepository : JpaRepository<User?, Long?> {
     fun findByUsername(username: String?): User?
