@@ -14,7 +14,9 @@ class User(
     @Column(name="email", unique = true, nullable = true)
     var email: String? = null,
     @Column(name="password")
-    var password: String? = null
+    var password: String? = null,
+    @Column(name="role")
+    var role: String = "USER"
 ) {
     @Id
     val uuid: String = UUID.randomUUID().toString()
