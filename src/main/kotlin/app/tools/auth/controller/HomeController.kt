@@ -14,7 +14,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.web.bind.annotation.*
 
-data class UserRequest(val username: String, val email: String, val password: String)
+data class UserRequest(val username: String, val email: String?=null, val password: String)
 data class SignUpRequest(val userRequest: UserRequest, val passwordCheck: String)
 data class SignInRequest(val userRequest: UserRequest)
 
@@ -57,7 +57,7 @@ class HomeController(private val argonConfig: ArgonConfig, private val userServi
 
         // Do input sanification on the request here
         val username = StringEscapeUtils.escapeHtml4(signUpRequest.userRequest.username.trim())
-        val email = StringEscapeUtils.escapeHtml4(signUpRequest.userRequest.email.trim())
+        val email = StringEscapeUtils.escapeHtml4(signUpRequest.userRequest.email?.trim())
         val password = StringEscapeUtils.escapeHtml4(signUpRequest.userRequest.password.trim())
 
         val passwordEncoder = Argon2PasswordEncoder(
@@ -71,6 +71,12 @@ class HomeController(private val argonConfig: ArgonConfig, private val userServi
 
         val user = User(username, email, encryptedPassword)
         userService.createUser(user)
+        userService.flush()
+
+        if (userService.findByUsername(username) == null) {
+            log.error("Failed to create user: {}", user)
+            return ResponseEntity.badRequest().body("Failed to create user")
+        }
 
         log.info("User created: {}", user)
 
