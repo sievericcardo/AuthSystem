@@ -7,11 +7,11 @@ import jakarta.persistence.Table
 import java.util.UUID
 
 @Entity
-@Table(name="user", schema="auth_schema")
+@Table(name="user")
 class User(
     @Column(name="username", unique = true)
     var username: String? = null,
-    @Column(name="email", unique = true)
+    @Column(name="email", unique = true, nullable = true)
     var email: String? = null,
     @Column(name="password")
     var password: String? = null
