@@ -33,6 +33,7 @@ ext {
 
 dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test")
+    testImplementation("com.h2database:h2:2.2.224")
     // Spring Boot
     testImplementation("org.springframework.boot:spring-boot-starter-test:${springBootVersion}")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}")
