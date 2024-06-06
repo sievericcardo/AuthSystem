@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder
 import app.tools.auth.service.UserService
 import app.tools.auth.model.User
+import app.tools.auth.service.JwtService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
@@ -12,6 +13,8 @@ import io.swagger.v3.oas.annotations.parameters.RequestBody as SwaggerRequestBod
 import org.apache.commons.text.StringEscapeUtils
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import org.springframework.http.HttpHeaders
+import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 
 data class UserRequest(val username: String, val email: String?=null, val password: String)
@@ -23,7 +26,7 @@ data class SignInRequest(val userRequest: UserRequest)
  */
 @RestController
 @RequestMapping("/api")
-class HomeController(private val argonConfig: ArgonConfig, private val userService: UserService) {
+class HomeController(private val argonConfig: ArgonConfig, private val userService: UserService, private val jwtService: JwtService) {
 
     private val log : Logger = LoggerFactory.getLogger(this.javaClass);
 
@@ -113,6 +116,14 @@ class HomeController(private val argonConfig: ArgonConfig, private val userServi
         }
 
         log.info("User logged in: {}", user)
-        return ResponseEntity.ok("User logged in successfully")
+
+        val jwtToken = jwtService.generateToken(username, user.role)
+        log.info("JWT token generated: {}", jwtToken)
+
+
+        val headers = HttpHeaders()
+        headers.set("Authorization", "Bearer $jwtToken")
+
+        return ResponseEntity("User logged in successfully", headers, HttpStatus.OK)
     }
 }
