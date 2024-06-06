@@ -1,12 +1,11 @@
 package app.tools.auth
 
-import app.tools.auth.config.ArgonConfig
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
-import org.springframework.boot.context.properties.EnableConfigurationProperties
+import org.springframework.context.annotation.ComponentScan
 
 @SpringBootApplication
-@EnableConfigurationProperties(ArgonConfig::class)
+@ComponentScan(basePackages = ["app.tools.auth.config"])
 open class Auth
 
 fun main(args: Array<String>) {
