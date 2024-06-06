@@ -25,6 +25,10 @@ class UserService @Autowired constructor(
         return userRepository.save(user)
     }
 
+    fun flush() {
+        userRepository.flush()
+    }
+
     fun deleteUser(userId: String) {
         userRepository.deleteById(userId)
     }
