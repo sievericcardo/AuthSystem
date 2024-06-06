@@ -2,15 +2,26 @@ package app.tools.auth.service
 
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
+import io.jsonwebtoken.security.Keys
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Component
+import org.springframework.stereotype.Service
 import java.util.*
 import javax.crypto.SecretKey
 
 
-@Component
+@Service
 class JwtService {
-    var key: SecretKey = Jwts.SIG.HS256.key().build();
+    private var key: SecretKey
+    private val stringKey: String? = System.getenv("JWT_SECRET_KEY")
+
+    init {
+        key = if (stringKey.isNullOrEmpty()) {
+            Jwts.SIG.HS256.key().build()
+        } else {
+            Keys.hmacShaKeyFor(stringKey.toByteArray())
+        }
+    }
 
     private fun extractUsername(token: String?): String {
         return extractClaim(token) { it.subject }
@@ -43,12 +54,10 @@ class JwtService {
         return (username == userDetails.username && !isTokenExpired(token))
     }
 
-
-    fun GenerateToken(username: String): String {
-        val claims: Map<String, Any?> = HashMap()
+    fun generateToken(username: String, role: String): String {
+        val claims: Map<String, Any?> = mapOf("role" to role)
         return createToken(claims, username)
     }
-
 
     private fun createToken(claims: Map<String, Any?>, username: String): String {
         return Jwts.builder()
