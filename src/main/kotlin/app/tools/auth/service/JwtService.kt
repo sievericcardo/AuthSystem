@@ -11,7 +11,7 @@ import javax.crypto.SecretKey
 
 
 @Service
-class JwtService {
+class JwtService(private val userService: UserService) {
     private var key: SecretKey
     private val stringKey: String? = System.getenv("JWT_SECRET_KEY")
 
@@ -49,9 +49,10 @@ class JwtService {
         return extractExpiration(token).before(Date())
     }
 
-    fun validateToken(token: String?, userDetails: UserDetails): Boolean {
+    fun validateToken(token: String?): Boolean {
         val username = extractUsername(token)
-        return (username == userDetails.username && !isTokenExpired(token))
+        val userDetails = userService.findByUsername(username)
+        return if (userDetails != null && username == userDetails.username && !isTokenExpired(token)) true else false
     }
 
     fun generateToken(username: String, role: String): String {
