@@ -126,4 +126,21 @@ class HomeController(private val argonConfig: ArgonConfig, private val userServi
 
         return ResponseEntity("User logged in successfully", headers, HttpStatus.OK)
     }
+
+    @Operation(summary = "Validate token of a user")
+    @ApiResponses(value = [
+        ApiResponse(responseCode = "200", description = "Token is valid"),
+        ApiResponse(responseCode = "401", description = "Token is invalid"),
+        ApiResponse(responseCode = "403", description = "Accessing the resource you were trying to reach is forbidden"),
+        ApiResponse(responseCode = "404", description = "The resource you were trying to reach is not found"),
+        ApiResponse(responseCode = "500", description = "Internal server error")
+    ])
+    @PostMapping("/validate")
+    fun validateToken(@RequestHeader("Authorization") token: String): ResponseEntity<String> {
+        val jwtToken = token.replace("Bearer ", "")
+        if (jwtService.validateToken(jwtToken)) {
+            return ResponseEntity.ok("Token is valid")
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token is invalid")
+    }
 }
