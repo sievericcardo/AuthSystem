@@ -27,6 +27,10 @@ class JwtService(private val userService: UserService) {
         return extractClaim(token) { it.subject }
     }
 
+    private fun extractRole(token: String?): String {
+        return extractClaim(token) { it["role"] as String }
+    }
+
     private fun extractExpiration(token: String?): Date {
         return extractClaim(token) { it.expiration }
     }
@@ -51,8 +55,9 @@ class JwtService(private val userService: UserService) {
 
     fun validateToken(token: String?): Boolean {
         val username = extractUsername(token)
+        val role = extractRole(token)
         val userDetails = userService.findByUsername(username)
-        return if (userDetails != null && username == userDetails.username && !isTokenExpired(token)) true else false
+        return userDetails != null && username == userDetails.username && role == userDetails.role &&  !isTokenExpired(token)
     }
 
     fun generateToken(username: String, role: String): String {

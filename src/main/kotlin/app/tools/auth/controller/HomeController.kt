@@ -120,7 +120,6 @@ class HomeController(private val argonConfig: ArgonConfig, private val userServi
         val jwtToken = jwtService.generateToken(username, user.role)
         log.info("JWT token generated: {}", jwtToken)
 
-
         val headers = HttpHeaders()
         headers.set("Authorization", "Bearer $jwtToken")
 
